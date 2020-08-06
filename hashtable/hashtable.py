@@ -23,7 +23,7 @@ class HashTable:
     def __init__(self, capacity):
         # Your code here
         self.capacity = capacity
-        self.table = [None] * capacity
+        self.table = [None] * self.capacity
 
     def get_num_slots(self):
         """
@@ -102,7 +102,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        if key not in self.table:
+        if key in self.table:
             self.table[self.hash_index(key)] = None
         else:
             print('Warning! Key not found!')

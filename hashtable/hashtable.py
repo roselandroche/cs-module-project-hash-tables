@@ -22,7 +22,8 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-
+        self.capacity = capacity
+        self.table = [None] * capacity
 
     def get_num_slots(self):
         """
@@ -35,7 +36,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        return len(self.table)
 
     def get_load_factor(self):
         """
@@ -44,7 +45,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        # number of stored keys divided by capacity
+        stored_keys = 0
+        for item in self.table:
+            if item is not None:
+                stored_keys += 1
+        return self.capacity / stored_keys
 
     def fnv1(self, key):
         """
@@ -55,7 +61,6 @@ class HashTable:
 
         # Your code here
 
-
     def djb2(self, key):
         """
         DJB2 hash, 32-bit
@@ -63,7 +68,10 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-
+        hash = 5381
+        for char in key:
+            hash = ((hash << 5) + hash) + ord(char)
+        return hash & 0xffffffff
 
     def hash_index(self, key):
         """
@@ -82,6 +90,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        self.table[self.hash_index(key)] = value
 
 
     def delete(self, key):
@@ -93,6 +102,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        if key not in self.table:
+            self.table[self.hash_index(key)] = None
+        else:
+            print('Warning! Key not found!')
 
 
     def get(self, key):
@@ -104,7 +117,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        if key in self.table:
+            return self.table[self.hash_index(key)]
+        else:
+            return None
 
     def resize(self, new_capacity):
         """
@@ -114,6 +130,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        self.capacity = new_capacity
+        for item in self.table:
+            self.hash_index(item)
 
 
 

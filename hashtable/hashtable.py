@@ -26,6 +26,7 @@ class HashTable:
         self.table = [None] * self.capacity
         self.stored_keys = 0
         self.head = None
+        self.prev = None
 
     def get_num_slots(self):
         """
@@ -84,6 +85,7 @@ class HashTable:
         while current is not None:
             if current.value == key:
                 return current
+            self.prev = current
             current = current.next
         return None
 
@@ -120,8 +122,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        if key in self.table:
-            pass
+        if self.find(self.hash_index(key)) in self.table:
+            deleted = self.hash_index(key)
+            self.prev.next = self.hash_index(key).next
+            return deleted
         else:
             print('Warning! Key not found!')
 
@@ -151,7 +155,8 @@ class HashTable:
         # Your code here
         self.capacity = new_capacity
         for item in self.table:
-            pass
+            self.hash_index(item.key)
+            self.put(item.key, item.value)
 
 
 

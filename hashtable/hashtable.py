@@ -24,6 +24,8 @@ class HashTable:
         # Your code here
         self.capacity = capacity
         self.table = [None] * self.capacity
+        self.stored_keys = 0
+        self.head = None
 
     def get_num_slots(self):
         """
@@ -46,11 +48,7 @@ class HashTable:
         """
         # Your code here
         # number of stored keys divided by capacity
-        stored_keys = 0
-        for item in self.table:
-            if item is not None:
-                stored_keys += 1
-        return self.capacity / stored_keys
+        return self.capacity / self.stored_keys
 
     def fnv1(self, key):
         """
@@ -81,6 +79,14 @@ class HashTable:
         #return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
+    def find(self, key):
+        current = self.head
+        while current is not None:
+            if current.value == key:
+                return current
+            current = current.next
+        return None
+
     def put(self, key, value):
         """
         Store the value with the given key.
@@ -90,7 +96,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        self.table[self.hash_index(key)] = value
+        index = self.hash_index(key)
+        
+        if self.find(key) is not None:
+            self.head.key = value
+            
+        else:
+            
+            self.table[index] = HashTableEntry(key, value)
+
+        self.stored_keys += 1
 
 
     def delete(self, key):
@@ -103,7 +118,7 @@ class HashTable:
         """
         # Your code here
         if key in self.table:
-            self.table[self.hash_index(key)] = None
+            pass
         else:
             print('Warning! Key not found!')
 
@@ -117,8 +132,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        if key in self.table:
-            return self.table[self.hash_index(key)]
+        index = self.hash_index(key)
+        if self.table[index] is not None:
+            return self.table[self.hash_index(key)].value
         else:
             return None
 
@@ -132,7 +148,7 @@ class HashTable:
         # Your code here
         self.capacity = new_capacity
         for item in self.table:
-            self.hash_index(item)
+            pass
 
 
 

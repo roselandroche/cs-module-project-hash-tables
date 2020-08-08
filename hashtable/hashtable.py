@@ -87,6 +87,10 @@ class HashTable:
             current = current.next
         return None
 
+    def add_to_head(self, key):
+        key.next = self.head
+        self.head = key
+
     def put(self, key, value):
         """
         Store the value with the given key.
@@ -98,12 +102,11 @@ class HashTable:
         # Your code here
         index = self.hash_index(key)
         
-        if self.find(key) is not None:
+        if self.find(self.table[index]) is not None:
             self.head.key = value
-            
+
         else:
-            
-            self.table[index] = HashTableEntry(key, value)
+            self.add_to_head(HashTableEntry(key, value))
 
         self.stored_keys += 1
 

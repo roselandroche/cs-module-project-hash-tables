@@ -11,21 +11,20 @@ def word_count(s):
     result = {}
     ignored = '":;,.-+=/\|[]}{()*^&'
 
-    for char in ignored:
-        if char in s:
-            continue
-        else:
-            return result
-
     lower_s = s.lower()
 
-    words = lower_s.split(" ")
+    for char in ignored:
+        if char in lower_s:
+            lower_s = lower_s.replace(char, '')
+    
+    if len(lower_s) > 0:
+        words = lower_s.split()
 
-    # for item in words:
-    #     if item not in result:
-    #         result.item = 1
-    #     else:
-    #         result[item] += 1
+        for item in words:
+            if item not in result:
+                result[item] = 1
+            else:
+                result[item] += 1
     
     return result
         
